@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - CricScore+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Welcome, Coach</h2>
+            <p class="team-name">{{ team }}</p>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="nav-item active" data-page="players">
+                <i class="fas fa-users"></i> Edit Player Details
+            </button>
+            <button class="nav-item" data-page="results">
+                <i class="fas fa-trophy"></i> Team Results
+            </button>
+            <button class="nav-item" data-page="analytics">
+                <i class="fas fa-chart-bar"></i> Player Analytics
+            </button>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="/logout" class="btn btn-secondary">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Player Management Page -->
+        <div id="players-page" class="page active">
+            <h1>Manage Your Team</h1>
+            
+            <!-- Add Player Section -->
+            <div class="card">
+                <h3><i class="fas fa-user-plus"></i> Add / Register Player</h3>
+                <form id="addPlayerForm" class="player-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="player-name">Player Name</label>
+                            <input type="text" id="player-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="player-role">Player Role</label>
+                            <select id="player-role" name="role" required>
+                                <option value="Batsman">Batsman</option>
+                                <option value="Bowler">Bowler</option>
+                                <option value="All-Rounder">All-Rounder</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Player
+                    </button>
+                </form>
+            </div>
+
+            <!-- Players List -->
+            <div class="card">
+                <h3><i class="fas fa-users"></i> Team Players</h3>
+                <div id="players-list" class="players-grid"></div>
+            </div>
+
+            <!-- Edit Player Modal -->
+            <div id="editPlayerModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Edit Player</h3>
+                        <span class="close">&times;</span>
+                    </div>
+                    <form id="editPlayerForm">
+                        <input type="hidden" id="edit-player-original" name="original_name">
+                        <div class="form-group">
+                            <label for="edit-player-name">Player Name</label>
+                            <input type="text" id="edit-player-name" name="new_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-player-role">Player Role</label>
+                            <select id="edit-player-role" name="new_role" required>
+                                <option value="Batsman">Batsman</option>
+                                <option value="Bowler">Bowler</option>
+                                <option value="All-Rounder">All-Rounder</option>
+                            </select>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update Player</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add Match Modal -->
+            <div id="addMatchModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Add Match Record</h3>
+                        <span class="close">&times;</span>
+                    </div>
+                    <form id="addMatchForm">
+                        <input type="hidden" id="match-player-name" name="player_name">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="match-id">Match ID</label>
+                                <input type="text" id="match-id" name="match_id" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="match-runs">Runs</label>
+                                <input type="number" id="match-runs" name="runs" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="match-wickets">Wickets</label>
+                                <input type="number" id="match-wickets" name="wickets" min="0" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="match-catches">Catches</label>
+                                <input type="number" id="match-catches" name="catches" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="match-balls-faced">Balls Faced</label>
+                                <input type="number" id="match-balls-faced" name="balls_faced" min="0" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="match-fours">Fours</label>
+                                <input type="number" id="match-fours" name="fours" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="match-sixes">Sixes</label>
+                                <input type="number" id="match-sixes" name="sixes" min="0" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="match-balls-bowled">Balls Bowled</label>
+                                <input type="number" id="match-balls-bowled" name="balls_bowled" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="match-dot-balls">Dot Balls</label>
+                                <input type="number" id="match-dot-balls" name="dot_balls" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Save Match</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Results Page -->
+        <div id="results-page" class="page">
+            <h1>Team Results</h1>
+            
+            <div class="card">
+                <div class="results-header">
+                    <h3><i class="fas fa-trophy"></i> Top 11 Players by Efficiency</h3>
+                    <div class="filter-controls">
+                        <label for="role-filter">Filter by Role:</label>
+                        <div class="custom-select-wrapper">
+                            <select id="role-filter" class="custom-select">
+                                <option value="All">All</option>
+                                <option value="Batsman">Batsman</option>
+                                <option value="Bowler">Bowler</option>
+                                <option value="All-Rounder">All-Rounder</option>
+                            </select>
+                            <div class="select-arrow">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="results-table"></div>
+                
+                <div class="efficiency-formula">
+                    <h4>Efficiency Formula (by role):</h4>
+                    <ul>
+                        <li><strong>Batsman:</strong> 1×Runs + 4×Fours + 6×Sixes + 0.6×Strike Rate − 0.5×Dot Balls + 10×Catches + 15×Wickets − 1.5×Economy</li>
+                        <li><strong>Bowler:</strong> 0.5×Runs + 2×Fours + 3×Sixes + 0.2×Strike Rate − 0.3×Dot Balls + 10×Catches + 25×Wickets − 3×Economy</li>
+                        <li><strong>All-Rounder:</strong> 1×Runs + 4×Fours + 6×Sixes + 0.5×Strike Rate − 0.4×Dot Balls + 10×Catches + 20×Wickets − 2×Economy</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Player Analytics Page -->
+        <div id="analytics-page" class="page">
+            <h1>Player Analytics</h1>
+            
+            <div class="card">
+                <div class="analytics-header">
+                    <h3><i class="fas fa-chart-bar"></i> Select Player for Analysis</h3>
+                    <div class="custom-select-wrapper">
+                        <select id="analytics-player-select" class="custom-select">
+                            <option value="">Select a player...</option>
+                        </select>
+                        <div class="select-arrow">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics View Toggle -->
+                <div id="view-toggle-section" class="view-toggle-section" style="display: none;">
+                    <h4><i class="fas fa-eye"></i> View Type</h4>
+                    <div class="view-toggle-buttons">
+                        <button class="view-btn active" data-view="summary">Summary Stats</button>
+                        <button class="view-btn" data-view="match">Per Match Analysis</button>
+                        <button class="view-btn" data-view="trends">Performance Trends</button>
+                    </div>
+                </div>
+                
+                <!-- Player Summary Stats -->
+                <div id="player-stats" class="player-stats-grid" style="display: none;"></div>
+                
+                <!-- Charts Section -->
+                <div id="player-charts" class="charts-section" style="display: none;">
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h4>Batting Performance</h4>
+                            <canvas id="battingChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h4>Bowling Performance</h4>
+                            <canvas id="bowlingChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h4>Efficiency Trend</h4>
+                            <canvas id="efficiencyChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h4>Match-wise Performance</h4>
+                            <canvas id="matchPerformanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Per Match Details -->
+                <div id="player-matches" class="matches-section" style="display: none;">
+                    <h4><i class="fas fa-list"></i> Match-wise Performance</h4>
+                    <div id="matches-table-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

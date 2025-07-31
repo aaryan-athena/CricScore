@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Login - CricScore+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 class="app-title">CricScore+</h1>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="register">Register</button>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-form" class="auth-form active">
+            <h2>Coach Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <div class="forgot-password-link">
+                    <a href="#" id="forgot-password-link">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+        </div>
+
+        <!-- Register Form -->
+        <div id="register-form" class="auth-form">
+            <h2>Register as Coach</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="reg-username">Your Name</label>
+                    <input type="text" id="reg-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email</label>
+                    <input type="email" id="reg-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-team">Your Team Name</label>
+                    <input type="text" id="reg-team" name="team" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-confirm">Confirm Password</label>
+                    <input type="password" id="reg-confirm" name="confirm_password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </form>
+        </div>
+
+        <!-- Forgot Password Form -->
+        <div id="forgot-password-form" class="auth-form">
+            <h2>Reset Password</h2>
+            <p>Enter your email address and we'll send you a link to reset your password.</p>
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <label for="forgot-email">Email</label>
+                    <input type="email" id="forgot-email" name="email" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Send Reset Link
+                </button>
+                <div class="back-to-login">
+                    <a href="#" id="back-to-login">Back to Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+<script>
+// Helper to show error
+function showFieldError(input, message) {
+    let error = input.parentElement.querySelector('.field-error');
+    if (!error) {
+        error = document.createElement('div');
+        error.className = 'field-error';
+        error.style.color = 'red';
+        error.style.fontSize = '0.9em';
+        input.parentElement.appendChild(error);
+    }
+    error.textContent = message;
+}
+function clearFieldError(input) {
+    let error = input.parentElement.querySelector('.field-error');
+    if (error) error.textContent = '';
+}
+
+// Login validation
+const loginForm = document.getElementById('loginForm');
+if (loginForm) {
+    loginForm.addEventListener('submit', function(e) {
+        let valid = true;
+        const email = loginForm.email;
+        const password = loginForm.password;
+        clearFieldError(email);
+        clearFieldError(password);
+        if (!email.value.match(/^\S+@\S+\.\S+$/)) {
+            showFieldError(email, 'Enter a valid email address.');
+            valid = false;
+        }
+        if (!password.value || password.value.length < 6) {
+            showFieldError(password, 'Password must be at least 6 characters.');
+            valid = false;
+        }
+        if (!valid) e.preventDefault();
+    });
+}
+
+// Register validation
+const registerForm = document.getElementById('registerForm');
+if (registerForm) {
+    registerForm.addEventListener('submit', function(e) {
+        let valid = true;
+        const username = registerForm.username;
+        const email = registerForm.email;
+        const team = registerForm.team;
+        const password = registerForm.password;
+        const confirm = registerForm.confirm_password;
+        [username, email, team, password, confirm].forEach(clearFieldError);
+        if (!username.value.trim()) {
+            showFieldError(username, 'Name is required.');
+            valid = false;
+        } else if (/\d/.test(username.value)) {
+            showFieldError(username, 'Name cannot contain numbers.');
+            valid = false;
+        }
+        if (!email.value.match(/^\S+@\S+\.\S+$/)) {
+            showFieldError(email, 'Enter a valid email address.');
+            valid = false;
+        }
+        if (!team.value.trim()) {
+            showFieldError(team, 'Team name is required.');
+            valid = false;
+        }
+        if (!password.value || password.value.length < 6) {
+            showFieldError(password, 'Password must be at least 6 characters.');
+            valid = false;
+        }
+        if (password.value !== confirm.value) {
+            showFieldError(confirm, 'Passwords do not match.');
+            valid = false;
+        }
+        if (!valid) e.preventDefault();
+    });
+}
+</script>
+{% endblock %}

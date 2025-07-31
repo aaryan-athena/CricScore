@@ -1,0 +1,8 @@
+flask==3.0.0
+pandas==2.2.3
+pyrebase4==4.8.0
+firebase-admin==6.4.0
+requests==2.32.3
+python-jwt==4.1.0
+cryptography==45.0.2
+werkzeug==3.0.1

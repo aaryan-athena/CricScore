@@ -1,0 +1,431 @@
+{% extends "base.html" %}
+
+{% block title %}CricScore+ - Modern Cricket Team Management{% endblock %}
+
+{% block content %}
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <h2>CricScore+</h2>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#home" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="#features" class="nav-link">Features</a>
+            </li>
+            <li class="nav-item">
+                <a href="#analytics" class="nav-link">Analytics</a>
+            </li>
+            <li class="nav-item">
+                <a href="#about" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+                <a href="#contact" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a href="/login" class="nav-link login-btn">Login</a>
+            </li>
+        </ul>
+        <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Modern Cricket Team <span class="highlight">Management</span>
+            </h1>
+            <p class="hero-description">
+                Elevate your cricket team's performance with our comprehensive management system. 
+                Track player statistics, analyze performance, and make data-driven decisions.
+            </p>
+            <div class="hero-buttons">
+                <a href="/login" class="btn btn-primary btn-large">
+                    <i class="fas fa-rocket"></i> Get Started
+                </a>
+                <a href="#features" class="btn btn-secondary btn-large">
+                    <i class="fas fa-play"></i> Learn More
+                </a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="hero-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Real-time Analytics</h3>
+                <p>Track performance metrics instantly</p>
+            </div>
+            <div class="hero-card">
+                <i class="fas fa-users"></i>
+                <h3>Team Management</h3>
+                <p>Organize players and matches efficiently</p>
+            </div>
+            <div class="hero-card">
+                <i class="fas fa-trophy"></i>
+                <h3>Performance Ranking</h3>
+                <p>Efficiency-based player rankings</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features">
+    <div class="container">
+        <div class="section-header">
+            <h2>Powerful Features</h2>
+            <p>Everything you need to manage your cricket team effectively</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h3>Player Management</h3>
+                <p>Add, edit, and organize your team players with role-based categorization including batsmen, bowlers, and all-rounders.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Role-based player categorization</li>
+                    <li><i class="fas fa-check"></i> Easy player profile management</li>
+                    <li><i class="fas fa-check"></i> Quick player search and filter</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3>Match Analytics</h3>
+                <p>Comprehensive match statistics tracking with detailed performance metrics for every game and player.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Detailed match statistics</li>
+                    <li><i class="fas fa-check"></i> Performance trend analysis</li>
+                    <li><i class="fas fa-check"></i> Strike rate and economy calculations</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3>Efficiency Rankings</h3>
+                <p>Advanced algorithm calculates player efficiency based on role-specific metrics to identify top performers.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Role-specific efficiency formulas</li>
+                    <li><i class="fas fa-check"></i> Top 11 player selection</li>
+                    <li><i class="fas fa-check"></i> Performance comparison tools</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Responsive Design</h3>
+                <p>Access your team data anywhere, anytime with our mobile-friendly interface that works on all devices.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Mobile-first responsive design</li>
+                    <li><i class="fas fa-check"></i> Cross-platform compatibility</li>
+                    <li><i class="fas fa-check"></i> Offline data viewing</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure Authentication</h3>
+                <p>Enterprise-grade security with Firebase authentication ensures your team data is safe and accessible only to authorized coaches.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Firebase authentication</li>
+                    <li><i class="fas fa-check"></i> Secure data encryption</li>
+                    <li><i class="fas fa-check"></i> Role-based access control</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-cloud"></i>
+                </div>
+                <h3>Cloud Storage</h3>
+                <p>All your data is securely stored in the cloud with real-time synchronization and automatic backups.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check"></i> Real-time data synchronization</li>
+                    <li><i class="fas fa-check"></i> Automatic cloud backups</li>
+                    <li><i class="fas fa-check"></i> 99.9% uptime guarantee</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Analytics Section -->
+<section id="analytics" class="analytics">
+    <div class="container">
+        <div class="analytics-content">
+            <div class="analytics-text">
+                <h2>Advanced Performance Analytics</h2>
+                <p>Make data-driven decisions with our comprehensive analytics dashboard. Track player performance over time, identify strengths and weaknesses, and optimize your team strategy.</p>
+                
+                <div class="analytics-features">
+                    <div class="analytics-feature">
+                        <div class="analytics-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="analytics-info">
+                            <h4>Performance Trends</h4>
+                            <p>Visualize player performance over multiple matches with interactive charts and graphs.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-feature">
+                        <div class="analytics-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="analytics-info">
+                            <h4>Smart Efficiency Calculation</h4>
+                            <p>Our proprietary algorithm calculates efficiency based on role-specific metrics for accurate player assessment.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-feature">
+                        <div class="analytics-icon">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                        <div class="analytics-info">
+                            <h4>Advanced Filtering</h4>
+                            <p>Filter and sort players by role, performance metrics, and time periods for detailed analysis.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="/login" class="btn btn-primary">
+                    <i class="fas fa-chart-bar"></i> Explore Analytics
+                </a>
+            </div>
+            
+            <div class="analytics-visual">
+                <div class="stats-dashboard">
+                    <div class="stats-card">
+                        <div class="stats-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h3>250+</h3>
+                            <p>Active Players</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <div class="stats-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h3>1,500+</h3>
+                            <p>Matches Tracked</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <div class="stats-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h3>50+</h3>
+                            <p>Active Teams</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <div class="stats-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stats-content">
+                            <h3>98%</h3>
+                            <p>Accuracy Rate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="about">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>About CricScore+</h2>
+                <p>CricScore+ is a modern cricket team management system designed specifically for coaches who want to take their team's performance to the next level. Our platform combines intuitive design with powerful analytics to provide everything you need to manage your cricket team effectively.</p>
+                
+                <div class="about-highlights">
+                    <div class="highlight-item">
+                        <i class="fas fa-lightbulb"></i>
+                        <div>
+                            <h4>Innovation</h4>
+                            <p>Cutting-edge technology meets cricket management</p>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight-item">
+                        <i class="fas fa-heart"></i>
+                        <div>
+                            <h4>Passion</h4>
+                            <p>Built by cricket enthusiasts for cricket teams</p>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight-item">
+                        <i class="fas fa-bullseye"></i>
+                        <div>
+                            <h4>Precision</h4>
+                            <p>Accurate data analysis for better decisions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="about-image">
+                <div class="about-card">
+                    <h3>Why Choose CricScore+?</h3>
+                    <ul class="about-list">
+                        <li><i class="fas fa-check"></i> Easy to use interface</li>
+                        <li><i class="fas fa-check"></i> Comprehensive analytics</li>
+                        <li><i class="fas fa-check"></i> Secure cloud storage</li>
+                        <li><i class="fas fa-check"></i> Mobile-friendly design</li>
+                        <li><i class="fas fa-check"></i> Real-time updates</li>
+                        <li><i class="fas fa-check"></i> 24/7 support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="contact">
+    <div class="container">
+        <div class="section-header">
+            <h2>Get In Touch</h2>
+            <p>Ready to transform your cricket team management? Contact us today!</p>
+        </div>
+        
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h4>Email Us</h4>
+                    <p>support@cricscore.com</p>
+                    <p>info@cricscore.com</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h4>Call Us</h4>
+                    <p>+1 (555) 123-4567</p>
+                    <p>Available 9 AM - 6 PM</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h4>Visit Us</h4>
+                    <p>123 Cricket Lane</p>
+                    <p>Sports City, SC 12345</p>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Your Email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="subject" placeholder="Subject" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>CricScore+</h3>
+                <p>Modern cricket team management for the digital age. Empowering coaches with data-driven insights.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Features</h4>
+                <ul class="footer-links">
+                    <li><a href="#features">Player Management</a></li>
+                    <li><a href="#features">Match Analytics</a></li>
+                    <li><a href="#features">Performance Rankings</a></li>
+                    <li><a href="#features">Team Statistics</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul class="footer-links">
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">API Reference</a></li>
+                    <li><a href="#">Status Page</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 CricScore+. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+{% endblock %}
