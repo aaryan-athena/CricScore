@@ -188,57 +188,202 @@ def add_match():
     runs = int(data.get('runs', 0))
     wickets = int(data.get('wickets', 0))
     catches = int(data.get('catches', 0))
+    missed_catches = int(data.get('missed_catches', 0))
+    misfields = int(data.get('misfields', 0))
     balls_faced = int(data.get('balls_faced', 0))
     fours = int(data.get('fours', 0))
     sixes = int(data.get('sixes', 0))
     balls_bowled = int(data.get('balls_bowled', 0))
     dot_balls = int(data.get('dot_balls', 0))
+    runs_conceded = int(data.get('runs_conceded', 0))
     
     # Calculate metrics
     strike_rate = round((runs / balls_faced * 100), 2) if balls_faced > 0 else 0
-    economy = round((runs / (balls_bowled / 6)), 2) if balls_bowled > 0 else 0
+    economy = round((runs_conceded / (balls_bowled / 6)), 2) if balls_bowled > 0 else 0
     
-    # Calculate efficiency based on role
+    # Calculate efficiency based on role with improved formulas
     if role == "Batsman":
+        # Emphasize batting stats for batsmen
         efficiency = (
-            1.0 * runs +
-            4.0 * fours +
-            6.0 * sixes +
-            0.6 * strike_rate -
-            0.5 * dot_balls +
-            10.0 * catches +
-            15.0 * wickets -
-            1.5 * economy
+            2.0 * runs +                    # Higher weight for runs
+            6.0 * fours +                   # Higher weight for boundaries
+            8.0 * sixes +                   # Higher weight for sixes
+            1.2 * strike_rate +             # Strong emphasis on strike rate
+            8.0 * catches +                 # Fielding contribution
+            12.0 * wickets +                # Bonus for bowling wickets
+            -3.0 * missed_catches +         # Penalty for missed catches
+            -2.0 * misfields +              # Penalty for misfields
+            -1.0 * dot_balls +              # Penalty for dot balls
+            -0.5 * economy                  # Minor penalty for economy (when bowling)
         )
     elif role == "Bowler":
+        # Emphasize bowling stats for bowlers
         efficiency = (
-            0.5 * runs +
-            2.0 * fours +
-            3.0 * sixes +
-            0.2 * strike_rate -
-            0.3 * dot_balls +
-            10.0 * catches +
-            25.0 * wickets -
-            3.0 * economy
+            0.8 * runs +                    # Lower weight for batting runs
+            2.0 * fours +                   # Lower weight for batting boundaries
+            3.0 * sixes +                   # Lower weight for batting sixes
+            0.3 * strike_rate +             # Minor batting contribution
+            8.0 * catches +                 # Good fielding contribution
+            30.0 * wickets +                # Very high weight for wickets
+            -5.0 * missed_catches +         # Higher penalty for missed catches
+            -3.0 * misfields +              # Higher penalty for misfields
+            -0.5 * dot_balls +              # Minor penalty for dot balls when batting
+            -4.0 * economy                  # Strong penalty for high economy rate
         )
     else:  # All-Rounder
+        # Balanced weight for both batting and bowling
         efficiency = (
-            1.0 * runs +
-            4.0 * fours +
-            6.0 * sixes +
-            0.5 * strike_rate -
-            0.4 * dot_balls +
-            10.0 * catches +
-            20.0 * wickets -
-            2.0 * economy
+            1.5 * runs +                    # Balanced weight for runs
+            5.0 * fours +                   # Balanced weight for boundaries
+            6.0 * sixes +                   # Balanced weight for sixes
+            0.8 * strike_rate +             # Balanced strike rate importance
+            8.0 * catches +                 # Fielding contribution
+            22.0 * wickets +                # Balanced weight for wickets
+            -4.0 * missed_catches +         # Penalty for missed catches
+            -2.5 * misfields +              # Penalty for misfields
+            -0.8 * dot_balls +              # Penalty for dot balls
+            -2.5 * economy                  # Balanced penalty for economy
         )
     
     success, message = save_match(db, uid, player_name, match_id, 
-                                runs, wickets, catches, balls_faced, 
-                                fours, sixes, balls_bowled, dot_balls, 
-                                strike_rate, economy, efficiency)
+                                runs, wickets, catches, missed_catches, misfields,
+                                balls_faced, fours, sixes, balls_bowled, dot_balls, 
+                                runs_conceded, strike_rate, economy, efficiency)
     
     return jsonify({'success': success, 'message': message})
+
+@app.route('/api/matches/<player_name>/<match_id>', methods=['PUT'])
+def update_match(player_name, match_id):
+    if 'logged_in' not in session or not session['logged_in']:
+        return jsonify({'success': False, 'message': 'Not authenticated'})
+    
+    data = request.get_json()
+    uid = session['uid']
+    
+    # Get player role
+    df = fetch_players(db, uid)
+    if player_name not in df.index:
+        return jsonify({'success': False, 'message': 'Player not found'})
+    
+    role = df.loc[player_name]['role']
+    
+    # Extract match data
+    runs = int(data.get('runs', 0))
+    wickets = int(data.get('wickets', 0))
+    catches = int(data.get('catches', 0))
+    missed_catches = int(data.get('missed_catches', 0))
+    misfields = int(data.get('misfields', 0))
+    balls_faced = int(data.get('balls_faced', 0))
+    fours = int(data.get('fours', 0))
+    sixes = int(data.get('sixes', 0))
+    balls_bowled = int(data.get('balls_bowled', 0))
+    dot_balls = int(data.get('dot_balls', 0))
+    runs_conceded = int(data.get('runs_conceded', 0))
+    
+    # Calculate metrics
+    strike_rate = round((runs / balls_faced * 100), 2) if balls_faced > 0 else 0
+    economy = round((runs_conceded / (balls_bowled / 6)), 2) if balls_bowled > 0 else 0
+    
+    # Calculate efficiency based on role with improved formulas
+    if role == "Batsman":
+        # Emphasize batting stats for batsmen
+        efficiency = (
+            2.0 * runs +                    # Higher weight for runs
+            6.0 * fours +                   # Higher weight for boundaries
+            8.0 * sixes +                   # Higher weight for sixes
+            1.2 * strike_rate +             # Strong emphasis on strike rate
+            8.0 * catches +                 # Fielding contribution
+            12.0 * wickets +                # Bonus for bowling wickets
+            -3.0 * missed_catches +         # Penalty for missed catches
+            -2.0 * misfields +              # Penalty for misfields
+            -1.0 * dot_balls +              # Penalty for dot balls
+            -0.5 * economy                  # Minor penalty for economy (when bowling)
+        )
+    elif role == "Bowler":
+        # Emphasize bowling stats for bowlers
+        efficiency = (
+            0.8 * runs +                    # Lower weight for batting runs
+            2.0 * fours +                   # Lower weight for batting boundaries
+            3.0 * sixes +                   # Lower weight for batting sixes
+            0.3 * strike_rate +             # Minor batting contribution
+            8.0 * catches +                 # Good fielding contribution
+            30.0 * wickets +                # Very high weight for wickets
+            -5.0 * missed_catches +         # Higher penalty for missed catches
+            -3.0 * misfields +              # Higher penalty for misfields
+            -0.5 * dot_balls +              # Minor penalty for dot balls when batting
+            -4.0 * economy                  # Strong penalty for high economy rate
+        )
+    else:  # All-Rounder
+        # Balanced weight for both batting and bowling
+        efficiency = (
+            1.5 * runs +                    # Balanced weight for runs
+            5.0 * fours +                   # Balanced weight for boundaries
+            6.0 * sixes +                   # Balanced weight for sixes
+            0.8 * strike_rate +             # Balanced strike rate importance
+            8.0 * catches +                 # Fielding contribution
+            22.0 * wickets +                # Balanced weight for wickets
+            -4.0 * missed_catches +         # Penalty for missed catches
+            -2.5 * misfields +              # Penalty for misfields
+            -0.8 * dot_balls +              # Penalty for dot balls
+            -2.5 * economy                  # Balanced penalty for economy
+        )
+    
+    # Update the match record
+    match_data = {
+        "runs": runs,
+        "wickets": wickets,
+        "catches": catches,
+        "missed_catches": missed_catches,
+        "misfields": misfields,
+        "balls_faced": balls_faced,
+        "fours": fours,
+        "sixes": sixes,
+        "balls_bowled": balls_bowled,
+        "dot_balls": dot_balls,
+        "runs_conceded": runs_conceded,
+        "strike_rate": strike_rate,
+        "economy": economy,
+        "efficiency": efficiency
+    }
+    
+    db.child("coach_data").child(uid).child("players").child(player_name).child("matches").child(match_id).set(match_data)
+    
+    # Recalculate player totals from all matches (similar to save_match function)
+    from players import save_match
+    # We'll use the existing logic from players.py by calling a helper function
+    # For now, let's implement the recalculation here
+    all_matches = db.child("coach_data").child(uid).child("players").child(player_name).child("matches").get().val()
+    if isinstance(all_matches, list):
+        all_matches = {str(i): match for i, match in enumerate(all_matches)}
+
+    valid_matches = []
+    for m in all_matches.values():
+        if isinstance(m, str):
+            try:
+                m = json.loads(m.replace("'", "\""))
+            except:
+                continue
+        if isinstance(m, dict):
+            valid_matches.append(m)
+
+    total_eff = sum(m.get("efficiency", 0) for m in valid_matches)
+    total_runs = sum(m.get("runs", 0) for m in valid_matches)
+    total_wickets = sum(m.get("wickets", 0) for m in valid_matches)
+    total_catches = sum(m.get("catches", 0) for m in valid_matches)
+    total_missed_catches = sum(m.get("missed_catches", 0) for m in valid_matches)
+    total_misfields = sum(m.get("misfields", 0) for m in valid_matches)
+    avg_eff = total_eff / len(valid_matches) if valid_matches else 0
+
+    db.child("coach_data").child(uid).child("players").child(player_name).update({
+        "efficiency": round(avg_eff, 2),
+        "total_runs": total_runs,
+        "total_wickets": total_wickets,
+        "total_catches": total_catches,
+        "total_missed_catches": total_missed_catches,
+        "total_misfields": total_misfields
+    })
+    
+    return jsonify({'success': True, 'message': 'Match updated successfully'})
 
 @app.route('/api/matches/<player_name>/<match_id>', methods=['DELETE'])
 def remove_match(player_name, match_id):
@@ -261,7 +406,14 @@ def team_results():
         return jsonify({'success': True, 'players': []})
     
     # Fill NaN values and sort by efficiency
-    df = df.fillna({"total_runs": 0, "total_wickets": 0, "total_catches": 0, "efficiency": 0})
+    df = df.fillna({
+        "total_runs": 0, 
+        "total_wickets": 0, 
+        "total_catches": 0, 
+        "total_missed_catches": 0,
+        "total_misfields": 0,
+        "efficiency": 0
+    })
     df = df.sort_values(by="efficiency", ascending=False).head(11)
     
     # Convert to list of dictionaries for JSON
@@ -273,7 +425,9 @@ def team_results():
             'efficiency': data['efficiency'],
             'total_runs': data['total_runs'],
             'total_wickets': data['total_wickets'],
-            'total_catches': data['total_catches']
+            'total_catches': data['total_catches'],
+            'total_missed_catches': data['total_missed_catches'],
+            'total_misfields': data['total_misfields']
         })
     
     return jsonify({'success': True, 'players': players_list})

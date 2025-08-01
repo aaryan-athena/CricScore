@@ -6,7 +6,9 @@
 <div class="auth-container">
     <div class="auth-card">
         <div class="auth-header">
-            <h1 class="app-title">CricScore+</h1>
+            <div class="app-title-container">
+                <img src="{{ url_for('static', filename='images/cricscore_logo.png') }}" alt="CricScore+" class="auth-logo">
+            </div>
             <div class="auth-tabs">
                 <button class="auth-tab active" data-tab="login">Login</button>
                 <button class="auth-tab" data-tab="register">Register</button>

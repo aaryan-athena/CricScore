@@ -102,55 +102,197 @@
                     </div>
                     <form id="addMatchForm">
                         <input type="hidden" id="match-player-name" name="player_name">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="match-id">Match ID</label>
-                                <input type="text" id="match-id" name="match_id" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="match-runs">Runs</label>
-                                <input type="number" id="match-runs" name="runs" min="0" value="0">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="match-wickets">Wickets</label>
-                                <input type="number" id="match-wickets" name="wickets" min="0" value="0">
-                            </div>
-                            <div class="form-group">
-                                <label for="match-catches">Catches</label>
-                                <input type="number" id="match-catches" name="catches" min="0" value="0">
+                        
+                        <!-- Basic Match Info -->
+                        <div class="form-section">
+                            <h4><i class="fas fa-info-circle"></i> Match Information</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="match-id">Match ID</label>
+                                    <input type="text" id="match-id" name="match_id" required>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="match-balls-faced">Balls Faced</label>
-                                <input type="number" id="match-balls-faced" name="balls_faced" min="0" value="0">
+
+                        <!-- Batting Stats Section -->
+                        <div class="form-section">
+                            <h4><i class="fas fa-baseball-ball"></i> Batting Stats</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="match-runs">Runs</label>
+                                    <input type="number" id="match-runs" name="runs" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="match-balls-faced">Balls Faced</label>
+                                    <input type="number" id="match-balls-faced" name="balls_faced" min="0" value="0">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="match-fours">Fours</label>
-                                <input type="number" id="match-fours" name="fours" min="0" value="0">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="match-fours">Fours</label>
+                                    <input type="number" id="match-fours" name="fours" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="match-sixes">Sixes</label>
+                                    <input type="number" id="match-sixes" name="sixes" min="0" value="0">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="match-dot-balls">Dot Balls (Faced)</label>
+                                    <input type="number" id="match-dot-balls" name="dot_balls" min="0" value="0">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="match-sixes">Sixes</label>
-                                <input type="number" id="match-sixes" name="sixes" min="0" value="0">
+
+                        <!-- Bowling Stats Section -->
+                        <div class="form-section">
+                            <h4><i class="fas fa-bullseye"></i> Bowling Stats</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="match-wickets">Wickets</label>
+                                    <input type="number" id="match-wickets" name="wickets" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="match-balls-bowled">Balls Bowled</label>
+                                    <input type="number" id="match-balls-bowled" name="balls_bowled" min="0" value="0">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="match-balls-bowled">Balls Bowled</label>
-                                <input type="number" id="match-balls-bowled" name="balls_bowled" min="0" value="0">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="match-runs-conceded">Runs Conceded</label>
+                                    <input type="number" id="match-runs-conceded" name="runs_conceded" min="0" value="0">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="match-dot-balls">Dot Balls</label>
-                                <input type="number" id="match-dot-balls" name="dot_balls" min="0" value="0">
+
+                        <!-- Fielding Stats Section -->
+                        <div class="form-section">
+                            <h4><i class="fas fa-hand-paper"></i> Fielding Stats</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="match-catches">Catches</label>
+                                    <input type="number" id="match-catches" name="catches" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="match-missed-catches">Missed Catches</label>
+                                    <input type="number" id="match-missed-catches" name="missed_catches" min="0" value="0">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="match-misfields">Misfields</label>
+                                    <input type="number" id="match-misfields" name="misfields" min="0" value="0">
+                                </div>
                             </div>
                         </div>
                         <div class="modal-actions">
                             <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                             <button type="submit" class="btn btn-primary">Save Match</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit Match Modal -->
+            <div id="editMatchModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Edit Match Record</h3>
+                        <span class="close">&times;</span>
+                    </div>
+                    <form id="editMatchForm">
+                        <input type="hidden" id="edit-match-player-name" name="player_name">
+                        <input type="hidden" id="edit-match-original-id" name="original_match_id">
+                        
+                        <!-- Match Selection -->
+                        <div class="form-section">
+                            <h4><i class="fas fa-search"></i> Select Match</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="edit-match-select">Select Match ID</label>
+                                    <select id="edit-match-select" name="match_id" required>
+                                        <option value="">Select a match...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Batting Stats Section -->
+                        <div class="form-section">
+                            <h4><i class="fas fa-baseball-ball"></i> Batting Stats</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="edit-match-runs">Runs</label>
+                                    <input type="number" id="edit-match-runs" name="runs" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-match-balls-faced">Balls Faced</label>
+                                    <input type="number" id="edit-match-balls-faced" name="balls_faced" min="0" value="0">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="edit-match-fours">Fours</label>
+                                    <input type="number" id="edit-match-fours" name="fours" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-match-sixes">Sixes</label>
+                                    <input type="number" id="edit-match-sixes" name="sixes" min="0" value="0">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="edit-match-dot-balls">Dot Balls (Faced)</label>
+                                    <input type="number" id="edit-match-dot-balls" name="dot_balls" min="0" value="0">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bowling Stats Section -->
+                        <div class="form-section">
+                            <h4><i class="fas fa-bullseye"></i> Bowling Stats</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="edit-match-wickets">Wickets</label>
+                                    <input type="number" id="edit-match-wickets" name="wickets" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-match-balls-bowled">Balls Bowled</label>
+                                    <input type="number" id="edit-match-balls-bowled" name="balls_bowled" min="0" value="0">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="edit-match-runs-conceded">Runs Conceded</label>
+                                    <input type="number" id="edit-match-runs-conceded" name="runs_conceded" min="0" value="0">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fielding Stats Section -->
+                        <div class="form-section">
+                            <h4><i class="fas fa-hand-paper"></i> Fielding Stats</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="edit-match-catches">Catches</label>
+                                    <input type="number" id="edit-match-catches" name="catches" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-match-missed-catches">Missed Catches</label>
+                                    <input type="number" id="edit-match-missed-catches" name="missed_catches" min="0" value="0">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="edit-match-misfields">Misfields</label>
+                                    <input type="number" id="edit-match-misfields" name="misfields" min="0" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update Match</button>
                         </div>
                     </form>
                 </div>
@@ -184,10 +326,11 @@
                 <div class="efficiency-formula">
                     <h4>Efficiency Formula (by role):</h4>
                     <ul>
-                        <li><strong>Batsman:</strong> 1×Runs + 4×Fours + 6×Sixes + 0.6×Strike Rate − 0.5×Dot Balls + 10×Catches + 15×Wickets − 1.5×Economy</li>
-                        <li><strong>Bowler:</strong> 0.5×Runs + 2×Fours + 3×Sixes + 0.2×Strike Rate − 0.3×Dot Balls + 10×Catches + 25×Wickets − 3×Economy</li>
-                        <li><strong>All-Rounder:</strong> 1×Runs + 4×Fours + 6×Sixes + 0.5×Strike Rate − 0.4×Dot Balls + 10×Catches + 20×Wickets − 2×Economy</li>
+                        <li><strong>Batsman:</strong> 2×Runs + 6×Fours + 8×Sixes + 1.2×Strike Rate + 8×Catches + 12×Wickets − 3×Missed Catches − 2×Misfields − 1×Dot Balls − 0.5×Economy</li>
+                        <li><strong>Bowler:</strong> 0.8×Runs + 2×Fours + 3×Sixes + 0.3×Strike Rate + 8×Catches + 30×Wickets − 5×Missed Catches − 3×Misfields − 0.5×Dot Balls − 4×Economy</li>
+                        <li><strong>All-Rounder:</strong> 1.5×Runs + 5×Fours + 6×Sixes + 0.8×Strike Rate + 8×Catches + 22×Wickets − 4×Missed Catches − 2.5×Misfields − 0.8×Dot Balls − 2.5×Economy</li>
                     </ul>
+                    <p><strong>Note:</strong> Strike Rate = (Runs/Balls Faced) × 100, Economy = Runs Conceded per Over</p>
                 </div>
             </div>
         </div>
@@ -224,6 +367,9 @@
                 
                 <!-- Charts Section -->
                 <div id="player-charts" class="charts-section" style="display: none;">
+                    <div class="section-header">
+                        <h4><i class="fas fa-chart-line"></i> Overall Performance Charts</h4>
+                    </div>
                     <div class="charts-grid">
                         <div class="chart-container">
                             <h4>Batting Performance</h4>
@@ -240,6 +386,73 @@
                         <div class="chart-container">
                             <h4>Match-wise Performance</h4>
                             <canvas id="matchPerformanceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Trends Section -->
+                <div id="performance-trends" class="trends-section" style="display: none;">
+                    <div class="section-header">
+                        <h4><i class="fas fa-analytics"></i> Detailed Performance Analysis by Category</h4>
+                    </div>
+                    <!-- Batting Trends -->
+                    <div class="trend-category">
+                        <h4><i class="fas fa-baseball-ball"></i> Batting Performance Trends</h4>
+                        <div class="trends-grid">
+                            <div class="chart-container">
+                                <h5>Strike Rate Trend</h5>
+                                <canvas id="strikeRateTrendChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h5>Runs per Match Trend</h5>
+                                <canvas id="runsTrendChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h5>Boundaries Trend (Fours + Sixes)</h5>
+                                <canvas id="boundariesTrendChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h5>Batting Efficiency Trend</h5>
+                                <canvas id="battingEfficiencyTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bowling Trends -->
+                    <div class="trend-category">
+                        <h4><i class="fas fa-bullseye"></i> Bowling Performance Trends</h4>
+                        <div class="trends-grid">
+                            <div class="chart-container">
+                                <h5>Economy Rate Trend</h5>
+                                <canvas id="economyTrendChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h5>Wickets per Match Trend</h5>
+                                <canvas id="wicketsTrendChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h5>Bowling Strike Rate Trend</h5>
+                                <canvas id="bowlingStrikeRateTrendChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h5>Bowling Efficiency Trend</h5>
+                                <canvas id="bowlingEfficiencyTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fielding Trends -->
+                    <div class="trend-category">
+                        <h4><i class="fas fa-hand-paper"></i> Fielding Performance Trends</h4>
+                        <div class="trends-grid">
+                            <div class="chart-container">
+                                <h5>Catches per Match Trend</h5>
+                                <canvas id="catchesTrendChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h5>Fielding Accuracy Trend</h5>
+                                <canvas id="fieldingAccuracyTrendChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
