@@ -214,7 +214,10 @@ def add_match():
             -3.0 * missed_catches +         # Penalty for missed catches
             -2.0 * misfields +              # Penalty for misfields
             -1.0 * dot_balls +              # Penalty for dot balls
-            -0.5 * economy                  # Minor penalty for economy (when bowling)
+            -0.5 * economy +                # Minor penalty for economy (when bowling)
+            4.0 * missed_catches_batsman +  # Bonus for batsman when catches missed
+            -1.0 * missed_catches_bowler +  # Minor penalty when bowler affected by drops
+            -0.5 * overthrows               # Minor penalty for overthrows
         )
     elif role == "Bowler":
         # Emphasize bowling stats for bowlers
@@ -228,7 +231,10 @@ def add_match():
             -5.0 * missed_catches +         # Higher penalty for missed catches
             -3.0 * misfields +              # Higher penalty for misfields
             -0.5 * dot_balls +              # Minor penalty for dot balls when batting
-            -4.0 * economy                  # Strong penalty for high economy rate
+            -4.0 * economy +                # Strong penalty for high economy rate
+            -2.0 * missed_catches_batsman + # Penalty when batsman benefits from drops
+            -8.0 * missed_catches_bowler +  # Major penalty when bowler affected by drops
+            -3.0 * overthrows               # Penalty for overthrows conceded
         )
     else:  # All-Rounder
         # Balanced weight for both batting and bowling
@@ -242,11 +248,15 @@ def add_match():
             -4.0 * missed_catches +         # Penalty for missed catches
             -2.5 * misfields +              # Penalty for misfields
             -0.8 * dot_balls +              # Penalty for dot balls
-            -2.5 * economy                  # Balanced penalty for economy
+            -2.5 * economy +                # Balanced penalty for economy
+            1.0 * missed_catches_batsman +  # Small bonus when batting benefits
+            -4.0 * missed_catches_bowler +  # Penalty when bowling affected by drops
+            -2.0 * overthrows               # Penalty for overthrows
         )
     
     success, message = save_match(db, uid, player_name, match_id, 
                                 runs, wickets, catches, missed_catches, misfields,
+                                missed_catches_batsman, missed_catches_bowler, overthrows,
                                 balls_faced, fours, sixes, balls_bowled, dot_balls, 
                                 runs_conceded, strike_rate, economy, efficiency)
     
@@ -272,6 +282,9 @@ def update_match(player_name, match_id):
     wickets = int(data.get('wickets', 0))
     catches = int(data.get('catches', 0))
     missed_catches = int(data.get('missed_catches', 0))
+    missed_catches_batsman = int(data.get('missed_catches_batsman', 0))
+    missed_catches_bowler = int(data.get('missed_catches_bowler', 0))
+    overthrows = int(data.get('overthrows', 0))
     misfields = int(data.get('misfields', 0))
     balls_faced = int(data.get('balls_faced', 0))
     fours = int(data.get('fours', 0))
@@ -295,6 +308,9 @@ def update_match(player_name, match_id):
             8.0 * catches +                 # Fielding contribution
             12.0 * wickets +                # Bonus for bowling wickets
             -3.0 * missed_catches +         # Penalty for missed catches
+            -4.0 * missed_catches_batsman + # Higher penalty for batsman perspective missed catches
+            -2.0 * missed_catches_bowler +  # Lower penalty for bowler perspective missed catches
+            -3.0 * overthrows +             # Penalty for overthrows
             -2.0 * misfields +              # Penalty for misfields
             -1.0 * dot_balls +              # Penalty for dot balls
             -0.5 * economy                  # Minor penalty for economy (when bowling)
@@ -309,6 +325,9 @@ def update_match(player_name, match_id):
             8.0 * catches +                 # Good fielding contribution
             30.0 * wickets +                # Very high weight for wickets
             -5.0 * missed_catches +         # Higher penalty for missed catches
+            -2.0 * missed_catches_batsman + # Lower penalty for batsman perspective missed catches
+            -6.0 * missed_catches_bowler +  # Higher penalty for bowler perspective missed catches
+            -5.0 * overthrows +             # Higher penalty for overthrows (bowling perspective)
             -3.0 * misfields +              # Higher penalty for misfields
             -0.5 * dot_balls +              # Minor penalty for dot balls when batting
             -4.0 * economy                  # Strong penalty for high economy rate
@@ -323,6 +342,9 @@ def update_match(player_name, match_id):
             8.0 * catches +                 # Fielding contribution
             22.0 * wickets +                # Balanced weight for wickets
             -4.0 * missed_catches +         # Penalty for missed catches
+            -3.0 * missed_catches_batsman + # Balanced penalty for batsman perspective missed catches
+            -4.0 * missed_catches_bowler +  # Balanced penalty for bowler perspective missed catches
+            -4.0 * overthrows +             # Balanced penalty for overthrows
             -2.5 * misfields +              # Penalty for misfields
             -0.8 * dot_balls +              # Penalty for dot balls
             -2.5 * economy                  # Balanced penalty for economy
@@ -334,6 +356,9 @@ def update_match(player_name, match_id):
         "wickets": wickets,
         "catches": catches,
         "missed_catches": missed_catches,
+        "missed_catches_batsman": missed_catches_batsman,
+        "missed_catches_bowler": missed_catches_bowler,
+        "overthrows": overthrows,
         "misfields": misfields,
         "balls_faced": balls_faced,
         "fours": fours,
@@ -371,6 +396,9 @@ def update_match(player_name, match_id):
     total_wickets = sum(m.get("wickets", 0) for m in valid_matches)
     total_catches = sum(m.get("catches", 0) for m in valid_matches)
     total_missed_catches = sum(m.get("missed_catches", 0) for m in valid_matches)
+    total_missed_catches_batsman = sum(m.get("missed_catches_batsman", 0) for m in valid_matches)
+    total_missed_catches_bowler = sum(m.get("missed_catches_bowler", 0) for m in valid_matches)
+    total_overthrows = sum(m.get("overthrows", 0) for m in valid_matches)
     total_misfields = sum(m.get("misfields", 0) for m in valid_matches)
     avg_eff = total_eff / len(valid_matches) if valid_matches else 0
 
@@ -380,6 +408,9 @@ def update_match(player_name, match_id):
         "total_wickets": total_wickets,
         "total_catches": total_catches,
         "total_missed_catches": total_missed_catches,
+        "total_missed_catches_batsman": total_missed_catches_batsman,
+        "total_missed_catches_bowler": total_missed_catches_bowler,
+        "total_overthrows": total_overthrows,
         "total_misfields": total_misfields
     })
     

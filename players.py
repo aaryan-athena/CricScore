@@ -14,6 +14,9 @@ def fetch_players(db, uid):
             "total_wickets": player.get("total_wickets", 0),
             "total_catches": player.get("total_catches", 0),
             "total_missed_catches": player.get("total_missed_catches", 0),
+            "total_missed_catches_batsman": player.get("total_missed_catches_batsman", 0),
+            "total_missed_catches_bowler": player.get("total_missed_catches_bowler", 0),
+            "total_overthrows": player.get("total_overthrows", 0),
             "total_misfields": player.get("total_misfields", 0),
         } for name, player in data.items()
     }
@@ -34,12 +37,15 @@ def save_player(db, uid, name, role):
         "total_wickets": 0,
         "total_catches": 0,
         "total_missed_catches": 0,
+        "total_missed_catches_batsman": 0,
+        "total_missed_catches_bowler": 0,
+        "total_overthrows": 0,
         "total_misfields": 0
     })
     return True, "Player added."
 
 # Save a new match entry for a player
-def save_match(db, uid, name, match_id, runs, wickets, catches, missed_catches, misfields, balls_faced, fours, sixes, balls_bowled, dot_balls, runs_conceded, strike_rate, economy, efficiency):
+def save_match(db, uid, name, match_id, runs, wickets, catches, missed_catches, missed_catches_batsman, missed_catches_bowler, overthrows, misfields, balls_faced, fours, sixes, balls_bowled, dot_balls, runs_conceded, strike_rate, economy, efficiency):
     match_exists = db.child("coach_data").child(uid).child("players").child(name).child("matches").child(match_id).get().val()
     if match_exists:
         return False, "Match ID already exists for this player."
@@ -49,6 +55,9 @@ def save_match(db, uid, name, match_id, runs, wickets, catches, missed_catches, 
         "wickets": wickets,
         "catches": catches,
         "missed_catches": missed_catches,
+        "missed_catches_batsman": missed_catches_batsman,
+        "missed_catches_bowler": missed_catches_bowler,
+        "overthrows": overthrows,
         "misfields": misfields,
         "balls_faced": balls_faced,
         "fours": fours,
@@ -83,6 +92,9 @@ def save_match(db, uid, name, match_id, runs, wickets, catches, missed_catches, 
     total_wickets = sum(m.get("wickets", 0) for m in valid_matches)
     total_catches = sum(m.get("catches", 0) for m in valid_matches)
     total_missed_catches = sum(m.get("missed_catches", 0) for m in valid_matches)
+    total_missed_catches_batsman = sum(m.get("missed_catches_batsman", 0) for m in valid_matches)
+    total_missed_catches_bowler = sum(m.get("missed_catches_bowler", 0) for m in valid_matches)
+    total_overthrows = sum(m.get("overthrows", 0) for m in valid_matches)
     total_misfields = sum(m.get("misfields", 0) for m in valid_matches)
     avg_eff = total_eff / len(valid_matches) if valid_matches else 0
 
@@ -92,6 +104,9 @@ def save_match(db, uid, name, match_id, runs, wickets, catches, missed_catches, 
         "total_wickets": total_wickets,
         "total_catches": total_catches,
         "total_missed_catches": total_missed_catches,
+        "total_missed_catches_batsman": total_missed_catches_batsman,
+        "total_missed_catches_bowler": total_missed_catches_bowler,
+        "total_overthrows": total_overthrows,
         "total_misfields": total_misfields
     })
     

@@ -137,6 +137,18 @@ function renderPlayers() {
                     <div class="stat-label">Missed Catches</div>
                 </div>
                 <div class="stat-item">
+                    <div class="stat-value">${player.total_missed_catches_batsman || 0}</div>
+                    <div class="stat-label">Missed Catches (Batsman POV)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${player.total_missed_catches_bowler || 0}</div>
+                    <div class="stat-label">Missed Catches (Bowler POV)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${player.total_overthrows || 0}</div>
+                    <div class="stat-label">Overthrows</div>
+                </div>
+                <div class="stat-item">
                     <div class="stat-value">${player.total_misfields || 0}</div>
                     <div class="stat-label">Misfields</div>
                 </div>
@@ -288,6 +300,9 @@ async function handleAddMatch(e) {
         wickets: parseInt(formData.get('wickets')),
         catches: parseInt(formData.get('catches')),
         missed_catches: parseInt(formData.get('missed_catches')),
+        missed_catches_batsman: parseInt(formData.get('missed_catches_batsman')),
+        missed_catches_bowler: parseInt(formData.get('missed_catches_bowler')),
+        overthrows: parseInt(formData.get('overthrows')),
         misfields: parseInt(formData.get('misfields')),
         balls_faced: parseInt(formData.get('balls_faced')),
         fours: parseInt(formData.get('fours')),
@@ -327,6 +342,9 @@ function handleMatchSelection(e) {
         document.getElementById('edit-match-wickets').value = matchData.wickets || 0;
         document.getElementById('edit-match-catches').value = matchData.catches || 0;
         document.getElementById('edit-match-missed-catches').value = matchData.missed_catches || 0;
+        document.getElementById('edit-match-missed-catches-batsman').value = matchData.missed_catches_batsman || 0;
+        document.getElementById('edit-match-missed-catches-bowler').value = matchData.missed_catches_bowler || 0;
+        document.getElementById('edit-match-overthrows').value = matchData.overthrows || 0;
         document.getElementById('edit-match-misfields').value = matchData.misfields || 0;
         document.getElementById('edit-match-balls-faced').value = matchData.balls_faced || 0;
         document.getElementById('edit-match-fours').value = matchData.fours || 0;
@@ -369,6 +387,9 @@ async function handleEditMatch(e) {
         wickets: parseInt(formData.get('wickets')),
         catches: parseInt(formData.get('catches')),
         missed_catches: parseInt(formData.get('missed_catches')),
+        missed_catches_batsman: parseInt(formData.get('missed_catches_batsman')),
+        missed_catches_bowler: parseInt(formData.get('missed_catches_bowler')),
+        overthrows: parseInt(formData.get('overthrows')),
         misfields: parseInt(formData.get('misfields')),
         balls_faced: parseInt(formData.get('balls_faced')),
         fours: parseInt(formData.get('fours')),
@@ -1351,4 +1372,20 @@ function createFieldingDoughnutChart(canvasId, title, matchArray) {
             }
         }
     });
+}
+
+// Formula dropdown toggle function
+function toggleFormulaDetails() {
+    const content = document.getElementById('formula-content');
+    const arrow = document.getElementById('formula-arrow');
+    
+    if (content.style.display === 'none' || !content.style.display) {
+        content.style.display = 'block';
+        content.classList.add('show');
+        arrow.classList.add('rotated');
+    } else {
+        content.style.display = 'none';
+        content.classList.remove('show');
+        arrow.classList.remove('rotated');
+    }
 }

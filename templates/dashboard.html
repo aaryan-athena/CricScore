@@ -175,7 +175,7 @@
                                     <input type="number" id="match-catches" name="catches" min="0" value="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="match-missed-catches">Missed Catches</label>
+                                    <label for="match-missed-catches">Missed Catches (Fielding Error)</label>
                                     <input type="number" id="match-missed-catches" name="missed_catches" min="0" value="0">
                                 </div>
                             </div>
@@ -183,6 +183,20 @@
                                 <div class="form-group">
                                     <label for="match-misfields">Misfields</label>
                                     <input type="number" id="match-misfields" name="misfields" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="match-missed-catches-batsman">Missed Catches (Batsman Benefited)</label>
+                                    <input type="number" id="match-missed-catches-batsman" name="missed_catches_batsman" min="0" value="0">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="match-missed-catches-bowler">Missed Catches (Bowler Affected)</label>
+                                    <input type="number" id="match-missed-catches-bowler" name="missed_catches_bowler" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="match-overthrows">Overthrows (Extra Runs)</label>
+                                    <input type="number" id="match-overthrows" name="overthrows" min="0" value="0">
                                 </div>
                             </div>
                         </div>
@@ -279,7 +293,7 @@
                                     <input type="number" id="edit-match-catches" name="catches" min="0" value="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="edit-match-missed-catches">Missed Catches</label>
+                                    <label for="edit-match-missed-catches">Missed Catches (Fielding Error)</label>
                                     <input type="number" id="edit-match-missed-catches" name="missed_catches" min="0" value="0">
                                 </div>
                             </div>
@@ -287,6 +301,20 @@
                                 <div class="form-group">
                                     <label for="edit-match-misfields">Misfields</label>
                                     <input type="number" id="edit-match-misfields" name="misfields" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-match-missed-catches-batsman">Missed Catches (Batsman Benefited)</label>
+                                    <input type="number" id="edit-match-missed-catches-batsman" name="missed_catches_batsman" min="0" value="0">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="edit-match-missed-catches-bowler">Missed Catches (Bowler Affected)</label>
+                                    <input type="number" id="edit-match-missed-catches-bowler" name="missed_catches_bowler" min="0" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-match-overthrows">Overthrows (Extra Runs)</label>
+                                    <input type="number" id="edit-match-overthrows" name="overthrows" min="0" value="0">
                                 </div>
                             </div>
                         </div>
@@ -324,13 +352,64 @@
                 <div id="results-table"></div>
                 
                 <div class="efficiency-formula">
-                    <h4>Efficiency Formula (by role):</h4>
-                    <ul>
-                        <li><strong>Batsman:</strong> 2×Runs + 6×Fours + 8×Sixes + 1.2×Strike Rate + 8×Catches + 12×Wickets − 3×Missed Catches − 2×Misfields − 1×Dot Balls − 0.5×Economy</li>
-                        <li><strong>Bowler:</strong> 0.8×Runs + 2×Fours + 3×Sixes + 0.3×Strike Rate + 8×Catches + 30×Wickets − 5×Missed Catches − 3×Misfields − 0.5×Dot Balls − 4×Economy</li>
-                        <li><strong>All-Rounder:</strong> 1.5×Runs + 5×Fours + 6×Sixes + 0.8×Strike Rate + 8×Catches + 22×Wickets − 4×Missed Catches − 2.5×Misfields − 0.8×Dot Balls − 2.5×Economy</li>
-                    </ul>
-                    <p><strong>Note:</strong> Strike Rate = (Runs/Balls Faced) × 100, Economy = Runs Conceded per Over</p>
+                    <div class="formula-header" onclick="toggleFormulaDetails()">
+                        <h4>Efficiency Formula Explained (by role) 
+                            <span class="dropdown-arrow" id="formula-arrow">
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                        </h4>
+                    </div>
+                    
+                    <div class="formula-content" id="formula-content" style="display: none;">
+                        <!-- Quick Formula Summary -->
+                        <div class="formula-summary">
+                            <h5>Quick Formula Reference:</h5>
+                            <ul>
+                                <li><strong>Batsman:</strong> 2×Runs + 6×Fours + 8×Sixes + 1.5×Strike Rate + 8×Catches + 12×Wickets − 3×Dropped Catches − 2×Misfields − 1×Dot Balls − 2.5×Times Dropped − 0.5×Economy</li>
+                                <li><strong>Bowler:</strong> 0.8×Runs + 2×Fours + 3×Sixes + 0.3×Strike Rate + 8×Catches + 30×Wickets + 6×Dropped Off Bowling − 5×Missed Catches − 3×Misfields + 0.5×Dot Balls − 4×Real Runs Given</li>
+                                <li><strong>All-Rounder:</strong> 1.5×Runs + 5×Fours + 6×Sixes + 0.8×Strike Rate + 8×Catches + 22×Wickets + 4×Dropped Chances − 4×Missed Catches − 2.5×Misfields − 0.8×Dot Balls − 2.5×Times Dropped − 2.5×Real Runs Given</li>
+                            </ul>
+                            <p><strong>New Metric:</strong> Real Runs Given = Runs Conceded − Misfields Off Bowling − Overthrows Off Bowling</p>
+                        </div>
+
+                        <!-- Detailed Explanations -->
+                        <div class="formula-explanations">
+                            <h5>Detailed Formula Explanations:</h5>
+                            
+                            <div class="role-explanation">
+                                <h6><i class="fas fa-baseball-ball"></i> Batsman Formula Explanation:</h6>
+                                <p>This formula shows how impactful a batter was in a match. We reward the total runs scored (×2) and especially highlight boundaries [fours (×6) and sixes (×8)] since they change games quickly. A high strike rate (×1.5) shows how fast they scored.</p>
+                                <p>If the batter also took catches or bowled and took wickets, we add those in (catches ×8, wickets ×12), since some batters contribute in the field too.</p>
+                                <p>On the downside, they lose points for dot balls (×-1), being dropped (×-2.5) [which means they got lucky and survived a dismissal], misfields (×-2), and any catches they dropped (×-3). If they bowled and had a poor economy rate (×-0.5), that's also penalized.</p>
+                            </div>
+
+                            <div class="role-explanation">
+                                <h6><i class="fas fa-bullseye"></i> Bowler Formula Explanation:</h6>
+                                <p>This formula measures a bowler's overall match impact across bowling, fielding, and any batting they contribute. Wickets carry the highest weight (×30) since taking wickets is a bowler's core role. We also reward catches (×8) and chances that were dropped off their bowling (×6) because both reflect impact even when not directly recorded as wickets.</p>
+                                <p>Batting stats like runs (×0.8), fours (×2), sixes (×3), and strike rate (×0.3) are included with smaller weight since they are secondary contributions for bowlers. Dot balls are rewarded (×0.5) because they build pressure and create opportunities.</p>
+                                <p>We subtract points for missed catches (×-5) and misfields (×-3), which hurt team performance. The biggest penalty comes from real runs given (×-4), calculated by removing runs due to teammate errors like misfields and overthrows. This keeps the metric fair and focused on the bowler's actual responsibility.</p>
+                            </div>
+
+                            <div class="role-explanation">
+                                <h6><i class="fas fa-user-friends"></i> All-Rounder Formula Explanation:</h6>
+                                <p>All-rounders contribute in every part of the game, so this formula blends batting, bowling, and fielding impact. We reward runs (×1.5), fours (×5), and sixes (×6), and also consider strike rate (×0.8) to reflect batting quality.</p>
+                                <p>On the bowling side, wickets (×22) carry big weight, and catches (×8) help reflect fielding contributions.</p>
+                                <p>We take away points for misfields (×-2.5), dot balls (×-0.8), being dropped (×-2.5), and missed catches (×-4). Like for bowlers, we subtract real runs given (×-2.5) to ensure they aren't unfairly punished for fielding errors by others.</p>
+                            </div>
+                        </div>
+
+                        <!-- Key Notes -->
+                        <div class="formula-notes">
+                            <h5>Important Notes:</h5>
+                            <ul>
+                                <li><strong>Strike Rate:</strong> (Runs/Balls Faced) × 100</li>
+                                <li><strong>Economy Rate:</strong> Runs Conceded per Over (6 balls)</li>
+                                <li><strong>Real Runs Given:</strong> Adjusted runs that exclude teammate fielding errors</li>
+                                <li><strong>Dot Balls for Bowlers:</strong> Now rewarded (+0.5) as they build pressure and create opportunities</li>
+                                <li><strong>Perspective-Based Scoring:</strong> Different weights for missed catches from batsman vs bowler perspective</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -431,7 +510,9 @@
                                 <canvas id="wicketsTrendChart"></canvas>
                             </div>
                             <div class="chart-container">
-                                <h5>Bowling Strike Rate Trend</h5>
+                                <h5>Bowling Strike Rate Trend 
+                                    <span class="chart-info-tooltip" data-tooltip="Pie chart showing: Wicket-taking (matches with ≥1 wicket), Economical (economy rate <6), Expensive (economy rate ≥6), Wicketless (0 wickets)">ℹ️</span>
+                                </h5>
                                 <canvas id="bowlingStrikeRateTrendChart"></canvas>
                             </div>
                             <div class="chart-container">
@@ -450,7 +531,9 @@
                                 <canvas id="catchesTrendChart"></canvas>
                             </div>
                             <div class="chart-container">
-                                <h5>Fielding Accuracy Trend</h5>
+                                <h5>Fielding Accuracy Trend 
+                                    <span class="chart-info-tooltip" data-tooltip="Doughnut chart showing: Catches Taken, Missed Catches, Misfields, Clean Fielding (matches with 0 missed catches AND 0 misfields)">ℹ️</span>
+                                </h5>
                                 <canvas id="fieldingAccuracyTrendChart"></canvas>
                             </div>
                         </div>
